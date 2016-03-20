@@ -386,8 +386,8 @@ namespace ChessBridge
 			sb.AppendLine("cm_parm mypp="+ownPassedPawns);
 			sb.AppendLine("cm_parm oppp="+oppPassedPawns);
 			
-			sb.AppendLine("cm_parm mypp="+ownPawnWeakness);
-			sb.AppendLine("cm_parm oppp="+oppPawnWeakness);
+			sb.AppendLine("cm_parm mypw="+ownPawnWeakness);
+			sb.AppendLine("cm_parm oppw="+oppPawnWeakness);
 			
 			sb.AppendLine("cm_parm cfd="+contempt);
 			sb.AppendLine("cm_parm sop="+strength);
