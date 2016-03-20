@@ -1,7 +1,9 @@
 # ChessBridge
 A bridge application that allows the chessmaster gui (9000, X, and XI) to work with different engines as the core, and allow the chessmaster based engines to work better with 3rd party GUIs.
 
-A C# .NET windows application. Could hypothetically work on linux as well if someone wanted to replace the one windows specific part with Mono-Linux code.
+A C# .NET windows application. Could hypothetically work on linux as well if someone wanted to replace the one windows specific part with Mono-Linux code equivalents. Other than that this should be mostly portable.
+
+Developed using SharpDevelop.
 
 I've always enjoyed the Chessmaster series, and was said to see it end. However, that doesn't mean it's dead. :)
 
