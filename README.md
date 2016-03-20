@@ -1,6 +1,8 @@
 # ChessBridge
 A bridge application that allows the chessmaster gui (9000, X, and XI) to work with different engines as the core, and allow the chessmaster based engines to work better with 3rd party GUIs.
 
+NOTE: This is released as free software. If you do happen use it, extend it, fork it, whatever it would be nice to give me a shout out though. :)
+
 A C# .NET windows application. Could hypothetically work on linux as well if someone wanted to replace the one windows specific part with Mono-Linux code equivalents. Other than that this should be mostly portable.
 
 Developed using SharpDevelop.
@@ -54,6 +56,8 @@ cm_parm myr=90        //Rook weighting for the engine. Range 0-150 (50 is normal
 cm_parm opr=90        //Rook weighting for the opponent. Range 0-150 (50 is normal)
 cm_parm myq=90        //Queen weighting for the engine. Range 0-150 (90 is normal)
 cm_parm opq=90        //Queen weighting for the opponent. Range 0-150 (90 is normal)
+
+You can get the actual hex offsets and structure of the CMP file by looking in the source. 
 
 BRIDGE MODE: Arena to TheKing
 
