@@ -24,72 +24,74 @@ personality.output.dir=\path\to\output\dir
 Then run the application. This will parse the personality files and write them out as text files with the correct engine paramter names and values.
 
 PERSONALITY NOTES
+=================
 
 These are the parameters (with sample values) and value ranges that the engine recognizes all of them are optional EXCEPT for opk and default. For the opk value, as far as I can tell you only need to get this once from the chessmaster application and it will work for everything else. Just in case you want to create a personality by hand. :)
 
-#OPK value. Required.
+ *OPK value. Required.*
 cm_parm opk=586126
-#Sets the personality with defaults. Required.
+ *Sets the personality with defaults. Required.*
 cm_parm default
-#Weighting of controlling the center for the engine. Range 0-200 (100 is normal)
+ *Weighting of controlling the center for the engine. Range 0-200 (100 is normal)*
 cm_parm mycc=120
-#Weighting of opponent controlling the center. Range 0-200 (100 is normal)
+ *Weighting of opponent controlling the center. Range 0-200 (100 is normal)*
 cm_parm opcc=120
-#Weighting of mobility for the engine. Range 0-200 (100 is normal)
+ *Weighting of mobility for the engine. Range 0-200 (100 is normal)*
 cm_parm mymob=120
-#Weighting of opponent controlling the center. Range 0-200 (100 is normal)
+ *Weighting of opponent controlling the center. Range 0-200 (100 is normal)*
 cm_parm opmob=120
-#Weighting of king safety for the engine. Range 0-200 (100 is normal)
+ *Weighting of king safety for the engine. Range 0-200 (100 is normal)*
 cm_parm myks=90
-#Weighting of opponent king safety. Range 0-200 (100 is normal)
+ *Weighting of opponent king safety. Range 0-200 (100 is normal)*
 cm_parm opks=90
-#Weighting of passed pawns for the engine. Range 0-200 (100 is normal)
+ *Weighting of passed pawns for the engine. Range 0-200 (100 is normal)*
 cm_parm mypp=100
-#Weighting of passed pawns for the opponent. Range 0-200 (100 is normal)
+ *Weighting of passed pawns for the opponent. Range 0-200 (100 is normal)*
 cm_parm oppp=100
-#Weighting of engine pawn weakness. Range 0-200 (100 is normal)
+ *Weighting of engine pawn weakness. Range 0-200 (100 is normal)*
 cm_parm mypw=110
-#Weighting of opponent pawn weakness. Range 0-200 (100 is normal)
+ *Weighting of opponent pawn weakness. Range 0-200 (100 is normal)*
 cm_parm oppw=110
-#Contempt for draw. Range -500-500 (0 is normal)
+ *Contempt for draw. Range -500-500 (0 is normal)*
 cm_parm cfd=-100
-#Strength of play. Range 0-100 (50 is "average")
+ *Strength of play. Range 0-100 (50 is "average")*
 cm_parm sop=35
-#Agreesive vs. Defensive. Range -100-100 (0 is balanced)
+ *Agreesive vs. Defensive. Range -100-100 (0 is balanced)*
 cm_parm avd=0
-#Randomness. Range 0-100 (0 no random moves, 100 pretty crazy)  
+ *Randomness. Range 0-100 (0 no random moves, 100 pretty crazy)*  
 cm_parm rnd=25
-#Selective search limit. Range 0-16 (16 being strongest)
+ *Selective search limit. Range 0-16 (16 being strongest)*
 cm_parm sel=6
-#Max search depth. Range 1-99 (99 being max depth)
+ *Max search depth. Range 1-99 (99 being max depth)*
 cm_parm md=99
-#Transposition table size in bytes. Range is 0 to 2^28 bytes (must be a power of 2)
-#For values other than 0, the Formula is 2^18+i where i is 1 to 10 (min 512KB, max 256MB)
+ *Transposition table size in bytes. Range is 0 to 2^28 bytes (must be a power of 2)*
+ *For values other than 0, the Formula is 2^18+i where i is 1 to 10 (min 512KB, max 256MB)*
 cm_parm tts=16777216
-#Pawn weighting for the engine.  Range 0-150 (15 is normal, 150 means you cuddle your pawns at night)
+ *Pawn weighting for the engine.  Range 0-150 (15 is normal, 150 means you cuddle your pawns at night)*
 cm_parm myp=10
-#Pawn weighting for the opponent. Range 0-150 (15 is normal)
+ *Pawn weighting for the opponent. Range 0-150 (15 is normal)*
 cm_parm opp=10
-#Knight weighting for engine. Range 0-150 (30 is normal)
+ *Knight weighting for engine. Range 0-150 (30 is normal)*
 cm_parm myn=30
-#Knight weighting for opponent. Range 0-150 (30 is normal)
+ *Knight weighting for opponent. Range 0-150 (30 is normal)*
 cm_parm opn=30
-#Bishop weighting for the engine. Range 0-150 (30 is normal)
+ *Bishop weighting for the engine. Range 0-150 (30 is normal)*
 cm_parm myb=30
-#Bishop weighting for the opponent. Range 0-150 (30 is normal)
+ *Bishop weighting for the opponent. Range 0-150 (30 is normal)*
 cm_parm opb=30
-#Rook weighting for the engine. Range 0-150 (50 is normal)
+ *Rook weighting for the engine. Range 0-150 (50 is normal)*
 cm_parm myr=90
-#Rook weighting for the opponent. Range 0-150 (50 is normal)
+ *Rook weighting for the opponent. Range 0-150 (50 is normal)*
 cm_parm opr=90
-#Queen weighting for the engine. Range 0-150 (90 is normal)
+ *Queen weighting for the engine. Range 0-150 (90 is normal)*
 cm_parm myq=90
-#Queen weighting for the engine. Range 0-150 (90 is normal)
+ *Queen weighting for the engine. Range 0-150 (90 is normal)*
 cm_parm opq=90
 
 You can get the actual hex offsets and structure of the CMP file by looking in the source. 
 
 BRIDGE MODE: Arena to TheKing
+=============================
 
 To use this program to allow the use of the chessmaster engine (TheKing) with third party GUIs like Arena so that you can easily use chessmaster personalities, set the following parameters in the chessbridge.cfg file:
 
@@ -103,13 +105,13 @@ Mode and gui can be left blank. Set the engine parameter to where/what you have 
 IMPORTANT! The bridge only works with the winboard/xboard protocol. If you're using a UCI only GUI, you will need to use some other application like WB2UCI as a go between.
 
 BRIDGE MODE: Chessmaster GUI to New Engine
-
+==========================================
 Chessmaster has supported importing other winboard engines for a while, but if you wanted to use another engine as the "core" engine for Chessmaster you were somewhat out of luck. By moving the old engine out of the way and replacing it with a new winboard engine you could get a partial success sometimes. You could play against it, but analysis wouldn't work and of course personalities wouldn't work either. For using a UCI engine, things like polyglot would sometimes work but my attempts at getting the CMGME to work with polyglot were met by failure.
 
 This bridge mode gets rid of most of these problems by correcting the IO between whatever engine and what chessmaster expects, including analysis data in both winboard based engines and UCI engines running through polyglot. For example, with this bridge you can use polyglot with something like stockfish and have it work complete with natural language analysis within the chessmaster GUI.
 
 BRIDGEMODE: Chessmaster GUI to Alternate Winboard Engine
-
+--------------------------------------------------------
 1. Copy the chessbridge executable, config file, and new winboard engine to the Chessmaster directory.
 2. Rename the existing chessmaster engine to something else, like TK.exe .
 3. Rename the chessbridge executable to what the the chessmaster engine was called (usually TheKing.exe or something similar)
@@ -122,7 +124,7 @@ BRIDGEMODE: Chessmaster GUI to Alternate Winboard Engine
 The chessmaster GUI will now be running against the new engine you specified. If your new engine supports analysis, then the mentor should be able to give you advice based on the analysis (including natural language audio).
 
 BRIDGEMODE: Chessmaster GUI to Alternate UCI Engine
-
+---------------------------------------------------
 You'll need polyglot for this. You can pull the latest polyglot executable out of Arena (that's what I did anyway). After that, you'll need to create a polyglot.ini file for the UCI engine you want to use. For my test case, I used stockfish 7. After that's done, the process is very similar to the above.
 
 1. Copy the polyglot executable, polyglot.ini, UCI engine, chessbridge executable, and chessbridge config file to the Chessmaster directory.
@@ -141,6 +143,7 @@ GUI->chessbridge->polyglot->uci engine->polyglot->chessbridge->GUI
 The chessbridge will handle any weird data coming from polyglot so that only chessmaster readable data gets through. This allows for things like natural language advice and such to workf with UCI engines that provide analysis capabilities.
 
 TODO: Personalities
+===================
 So great, you can replace the chessmaster engine with a new engine. But what about personalities?
 
 Well, that's not so easy. The chessmaster engine is awesome for it's ability to be configured. But there aren't a whole lot of engines out there that allow you that level of customization (or any customization at all for that matter). Worse, every engine can have a different set of customization paramaters with different value ranges. So unfortunately there is no universal way that I'm aware of to translate CM personality profiles to other engines.
