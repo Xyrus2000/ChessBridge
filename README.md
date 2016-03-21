@@ -17,9 +17,9 @@ The application has two modes. One is direct use a "bridge" and the other is to 
 
 To dump a directory of personality files, in the chessbridge.cfg file set:
 
-mode=personality.dump
-personality.input.dir=\path\to\personality\files
-personality.output.dir=\path\to\output\dir
+mode=personality.dump  
+personality.input.dir=\path\to\personality\files  
+personality.output.dir=\path\to\output\dir  
 
 Then run the application. This will parse the personality files and write them out as text files with the correct engine paramter names and values.
 
@@ -28,77 +28,77 @@ PERSONALITY NOTES
 
 These are the parameters (with sample values) and value ranges that the engine recognizes all of them are optional EXCEPT for opk and default. For the opk value, as far as I can tell you only need to get this once from the chessmaster application and it will work for everything else. Just in case you want to create a personality by hand. :)
 
- *OPK value. Required.*
-cm_parm opk=586126
- *Sets the personality with defaults. Required.*
-cm_parm default
- *Weighting of controlling the center for the engine. Range 0-200 (100 is normal)*
-cm_parm mycc=120
- *Weighting of opponent controlling the center. Range 0-200 (100 is normal)*
-cm_parm opcc=120
- *Weighting of mobility for the engine. Range 0-200 (100 is normal)*
-cm_parm mymob=120
- *Weighting of opponent controlling the center. Range 0-200 (100 is normal)*
-cm_parm opmob=120
- *Weighting of king safety for the engine. Range 0-200 (100 is normal)*
-cm_parm myks=90
- *Weighting of opponent king safety. Range 0-200 (100 is normal)*
-cm_parm opks=90
- *Weighting of passed pawns for the engine. Range 0-200 (100 is normal)*
-cm_parm mypp=100
- *Weighting of passed pawns for the opponent. Range 0-200 (100 is normal)*
-cm_parm oppp=100
- *Weighting of engine pawn weakness. Range 0-200 (100 is normal)*
-cm_parm mypw=110
- *Weighting of opponent pawn weakness. Range 0-200 (100 is normal)*
-cm_parm oppw=110
- *Contempt for draw. Range -500-500 (0 is normal)*
-cm_parm cfd=-100
- *Strength of play. Range 0-100 (50 is "average")*
-cm_parm sop=35
- *Agreesive vs. Defensive. Range -100-100 (0 is balanced)*
-cm_parm avd=0
+ *OPK value. Required.*  
+cm_parm opk=586126  
+ *Sets the personality with defaults. Required.*  
+cm_parm default  
+ *Weighting of controlling the center for the engine. Range 0-200 (100 is normal)*  
+cm_parm mycc=120  
+ *Weighting of opponent controlling the center. Range 0-200 (100 is normal)*  
+cm_parm opcc=120  
+ *Weighting of mobility for the engine. Range 0-200 (100 is normal)*  
+cm_parm mymob=120  
+ *Weighting of opponent controlling the center. Range 0-200 (100 is normal)*  
+cm_parm opmob=120  
+ *Weighting of king safety for the engine. Range 0-200 (100 is normal)*  
+cm_parm myks=90  
+ *Weighting of opponent king safety. Range 0-200 (100 is normal)*  
+cm_parm opks=90  
+ *Weighting of passed pawns for the engine. Range 0-200 (100 is normal)*  
+cm_parm mypp=100  
+ *Weighting of passed pawns for the opponent. Range 0-200 (100 is normal)*  
+cm_parm oppp=100  
+ *Weighting of engine pawn weakness. Range 0-200 (100 is normal)*  
+cm_parm mypw=110  
+ *Weighting of opponent pawn weakness. Range 0-200 (100 is normal)*  
+cm_parm oppw=110  
+ *Contempt for draw. Range -500-500 (0 is normal)*  
+cm_parm cfd=-100  
+ *Strength of play. Range 0-100 (50 is "average")*  
+cm_parm sop=35  
+ *Agreesive vs. Defensive. Range -100-100 (0 is balanced)*  
+cm_parm avd=0  
  *Randomness. Range 0-100 (0 no random moves, 100 pretty crazy)*  
-cm_parm rnd=25
- *Selective search limit. Range 0-16 (16 being strongest)*
-cm_parm sel=6
- *Max search depth. Range 1-99 (99 being max depth)*
-cm_parm md=99
- *Transposition table size in bytes. Range is 0 to 2^28 bytes (must be a power of 2)*
- *For values other than 0, the Formula is 2^18+i where i is 1 to 10 (min 512KB, max 256MB)*
-cm_parm tts=16777216
- *Pawn weighting for the engine.  Range 0-150 (15 is normal, 150 means you cuddle your pawns at night)*
-cm_parm myp=10
- *Pawn weighting for the opponent. Range 0-150 (15 is normal)*
-cm_parm opp=10
- *Knight weighting for engine. Range 0-150 (30 is normal)*
-cm_parm myn=30
- *Knight weighting for opponent. Range 0-150 (30 is normal)*
-cm_parm opn=30
- *Bishop weighting for the engine. Range 0-150 (30 is normal)*
-cm_parm myb=30
- *Bishop weighting for the opponent. Range 0-150 (30 is normal)*
-cm_parm opb=30
- *Rook weighting for the engine. Range 0-150 (50 is normal)*
-cm_parm myr=90
- *Rook weighting for the opponent. Range 0-150 (50 is normal)*
-cm_parm opr=90
- *Queen weighting for the engine. Range 0-150 (90 is normal)*
-cm_parm myq=90
- *Queen weighting for the engine. Range 0-150 (90 is normal)*
-cm_parm opq=90
+cm_parm rnd=25  
+ *Selective search limit. Range 0-16 (16 being strongest)*  
+cm_parm sel=6  
+ *Max search depth. Range 1-99 (99 being max depth)*  
+cm_parm md=99  
+ *Transposition table size in bytes. Range is 0 to 2^28 bytes (must be a power of 2)*  
+ *For values other than 0, the Formula is 2^18+i where i is 1 to 10 (min 512KB, max 256MB)*  
+cm_parm tts=16777216  
+ *Pawn weighting for the engine.  Range 0-150 (15 is normal, 150 means you cuddle your pawns at night)*  
+cm_parm myp=10  
+ *Pawn weighting for the opponent. Range 0-150 (15 is normal)*  
+cm_parm opp=10  
+ *Knight weighting for engine. Range 0-150 (30 is normal)*  
+cm_parm myn=30  
+ *Knight weighting for opponent. Range 0-150 (30 is normal)*  
+cm_parm opn=30  
+ *Bishop weighting for the engine. Range 0-150 (30 is normal)*  
+cm_parm myb=30  
+ *Bishop weighting for the opponent. Range 0-150 (30 is normal)*  
+cm_parm opb=30  
+ *Rook weighting for the engine. Range 0-150 (50 is normal)*  
+cm_parm myr=90  
+ *Rook weighting for the opponent. Range 0-150 (50 is normal)*  
+cm_parm opr=90  
+ *Queen weighting for the engine. Range 0-150 (90 is normal)*  
+cm_parm myq=90  
+ *Queen weighting for the engine. Range 0-150 (90 is normal)*  
+cm_parm opq=90  
 
 You can get the actual hex offsets and structure of the CMP file by looking in the source. 
 
 BRIDGE MODE: Arena to TheKing
 =============================
 
-To use this program to allow the use of the chessmaster engine (TheKing) with third party GUIs like Arena so that you can easily use chessmaster personalities, set the following parameters in the chessbridge.cfg file:
+To use this program to allow the use of the chessmaster engine (TheKing) with third party GUIs like Arena so that you can easily use chessmaster personalities, set the following parameters in the chessbridge.cfg file:  
 
-mode=
-gui=
-engine=TheKing.exe
-personality=Sompeersonality.CMP
+mode=  
+gui=  
+engine=TheKing.exe  
+personality=Sompeersonality.CMP  
 
 Mode and gui can be left blank. Set the engine parameter to where/what you have your chessmaster engine executable named. The personality can either be a native chessmaster CMP file or an text/ini file with the paramaters specified above. Then in Arena or whatever GUI you're using, just specify the chessbridge executable as the engine.
 
@@ -115,10 +115,10 @@ BRIDGEMODE: Chessmaster GUI to Alternate Winboard Engine
 1. Copy the chessbridge executable, config file, and new winboard engine to the Chessmaster directory.
 2. Rename the existing chessmaster engine to something else, like TK.exe .
 3. Rename the chessbridge executable to what the the chessmaster engine was called (usually TheKing.exe or something similar)
-4. Set the following parameters in the chessbridge config file:
-    mode=
-    gui=chessmaster
-    engine=YourNewEngine.exe
+4. Set the following parameters in the chessbridge config file:  
+    mode=  
+    gui=chessmaster  
+    engine=YourNewEngine.exe  
 5. Run Chessmaster
 
 The chessmaster GUI will now be running against the new engine you specified. If your new engine supports analysis, then the mentor should be able to give you advice based on the analysis (including natural language audio).
@@ -131,12 +131,12 @@ You'll need polyglot for this. You can pull the latest polyglot executable out o
 2. Rename the existing chessmaster engine to something else, like TK.exe .
 3. Rename the chessbridge executable to what the the chessmaster engine was called (usually TheKing.exe or something similar)
 4. Set the following parameters in the chessbridge config file:
-    mode=
-    gui=chessmaster
-    engine=polyglot.exe
+    mode=  
+    gui=chessmaster  
+    engine=polyglot.exe  
 5. Run Chessmaster
 
-The flow looks like this:
+The flow looks like this:  
 
 GUI->chessbridge->polyglot->uci engine->polyglot->chessbridge->GUI
 
