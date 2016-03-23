@@ -252,7 +252,7 @@ namespace ChessBridge
 			try
 			{
 				string str = configParams[LOGGING_KEY];
-				if (str == null)
+				if (str == null || !str.ToLower().Trim().Equals("true"))
 				{
 					logToFile = false;
 				}
