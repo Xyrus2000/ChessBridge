@@ -39,17 +39,60 @@
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Speech">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InfoPropertiesPanel.cs" />
+    <Compile Include="InfoPropertiesPanel.Designer.cs">
+      <DependentUpon>InfoPropertiesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MaterialPropertiesPanel.cs" />
+    <Compile Include="MaterialPropertiesPanel.Designer.cs">
+      <DependentUpon>MaterialPropertiesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Personality.cs" />
+    <Compile Include="PositionalPropertiesPanel.cs" />
+    <Compile Include="PositionalPropertiesPanel.Designer.cs">
+      <DependentUpon>PositionalPropertiesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StylePropertiesPanel.cs" />
+    <Compile Include="StylePropertiesPanel.Designer.cs">
+      <DependentUpon>StylePropertiesPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI.cs" />
+    <Compile Include="PersonalityGUI.cs" />
+    <Compile Include="PersonalityGUI.Designer.cs">
+      <DependentUpon>PersonalityGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChessMaster.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="InfoPropertiesPanel.resx">
+      <DependentUpon>InfoPropertiesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MaterialPropertiesPanel.resx">
+      <DependentUpon>MaterialPropertiesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionalPropertiesPanel.resx">
+      <DependentUpon>PositionalPropertiesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StylePropertiesPanel.resx">
+      <DependentUpon>StylePropertiesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PersonalityGUI.resx">
+      <DependentUpon>PersonalityGUI.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

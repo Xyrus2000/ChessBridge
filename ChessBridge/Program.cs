@@ -15,6 +15,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Management;
+using System.Speech.Synthesis;
+using System.Windows.Forms;
 
 namespace ChessBridge
 {
@@ -63,6 +65,8 @@ namespace ChessBridge
 		private const string LOGGING_KEY = "logging";
 		//Base file name for generated logs
 		private const string LOG_BASE_FILENAME_KEY = "logging.base_filename";
+		//The engine executable to bridge to
+		private const string SHOW_PERSONALITY_DIALOG_KEY = "show.personality.dialog";
 		
 		/**
 		 * Log file writer.
@@ -78,6 +82,9 @@ namespace ChessBridge
 		private static Process engineProcess = null;
 		
 		private static ManualResetEvent run = new ManualResetEvent(true);
+		
+		private static SpeechSynthesizer reader = new SpeechSynthesizer();
+		private static bool analyzeMode = false;
 		
 		/**
 		 * Kills a process and all of it's children.
@@ -146,6 +153,16 @@ namespace ChessBridge
 		}
 		
 		/**
+		 * Helper method to get a byte array from a string.
+		 */ 
+		public static byte[] getBytesFromString(string str)
+		{
+		    byte[] bytes = new byte[str.Length * sizeof(char)];
+            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+		}
+		
+		/**
 		 * Helper method that gets an int value from a byte array at the specified offset
 		 */
 		public static int getIntFromByteArray(byte[] bytes, int offset)
@@ -172,6 +189,167 @@ namespace ChessBridge
 		}
 		
 		/**
+		 * Parses move text.
+		 */
+		private static List<string> parseMoveToText(string pgn)
+		{
+		    List<string> gameText = new List<string>();
+		    
+		    string[] tokens = pgn.Split(' ');
+		    foreach(string token in tokens)
+		    {
+		        string t = token.Trim();
+		        
+		        if (t[0] >= 0x30 && t[0] <= 0x39)
+		        {
+		            continue;
+		        }
+		        
+		        StringBuilder builder = new StringBuilder();
+		        if (t.Length == 2)
+		        {
+		            builder.Append("Pawn to "+t);
+		        }
+		        else if (t.Contains("x"))
+		        {
+    		        if (t[0] >='a' && t[0] <= 'h')
+        		    {
+    		            builder.Append("Pawn takes "+t.Substring(t.IndexOf('x')+1));
+        		    }
+    		        else
+    		        {
+    		        
+        		        switch(t[0])
+            		    {
+            		        case 'K':
+        		                builder.Append("King takes "+t.Substring(t.IndexOf('x')+1));
+        		            break;
+            		            
+            		        case 'Q':
+            		            builder.Append("Queen takes "+t.Substring(t.IndexOf('x')+1));
+        		            break;
+            		            
+            		        case 'B':
+            		            builder.Append("Bishop takes "+t.Substring(t.IndexOf('x')+1));
+        		            break;
+            		        
+            		        case 'N':
+            		            builder.Append("Knight takes "+t.Substring(t.IndexOf('x')+1));
+        		            break;
+            		        
+            		        case 'R':
+            		            builder.Append("Rook takes "+t.Substring(t.IndexOf('x')+1));
+        		            break;
+        		              
+        		            default:
+        		                builder.Append("Unrecognized Move: "+t);
+        		            break;
+            		    }
+    		        }
+		        }
+    		    else
+    		    {
+    		        //a regular move
+    		        if (t[0] >='a' && t[0] <= 'h')
+        		    {
+    		            builder.Append("Pawn to "+t.Substring(2));
+        		    }
+    		        else
+    		        {
+        		        switch(t[0])
+            		    {
+            		        case 'K':
+        		                builder.Append("King to "+t.Substring(2));
+        		            break;
+            		            
+            		        case 'Q':
+            		            builder.Append("Queen to "+t.Substring(2));
+        		            break;
+            		            
+            		        case 'B':
+            		            builder.Append("Bishop to "+t.Substring(2));
+        		            break;
+            		        
+            		        case 'N':
+            		            builder.Append("Knight to "+t.Substring(2));
+        		            break;
+            		        
+            		        case 'R':
+            		            builder.Append("Rook to "+t.Substring(2));
+        		            break;
+        		              
+        		            default:
+        		                builder.Append("Unrecognized Move: "+t);
+        		            break;
+            		    }
+    		        }
+    		    }
+    		    
+    		    if (t.EndsWith("+"))
+		        {
+		            builder.Append(" check.");
+		        }
+		        else if (t.EndsWith("#"))
+		        {
+		            builder.Append(" checkmate.");
+		        }
+		        else if (t.EndsWith("!?"))
+		        {
+		             builder.Append(" Interesting, but maybe not the best move.");
+		        }
+		        else if (t.EndsWith("?!"))
+		        {
+		             builder.Append(" A dubious move.");
+		        }
+		        else if (t.EndsWith("?"))
+		        {
+		             builder.Append(" A bad move.");
+		        }
+		        else if (t.EndsWith("??"))
+		        {
+		             builder.Append(" A clear blunder.");
+		        }
+		        else if (t.EndsWith("!"))
+		        {
+		             builder.Append(" A good move.");
+		        }
+		        else if (t.EndsWith("!!"))
+		        {
+		             builder.Append(" An excellent move!");
+		        }
+		        else
+		        {
+		            char p = t[t.Length - 1];
+		            switch(p)
+		            {
+		                case 'q':
+		                    builder.Append(" Promoted to Queen!");
+		                break;
+		                
+		                case 'r':
+		                    builder.Append(" Promoted to Rook!");
+		                break;
+		                
+		                case 'B':
+		                    builder.Append(" Promoted to Bishop!");
+		                break;
+		                
+		                case 'N':
+		                    builder.Append(" Promoted to Knight!");
+		                break;
+		                
+		                default:
+		                break;
+		            }
+		        }
+		        
+		        gameText.Add(builder.ToString()); 
+		    }
+		    
+		    return gameText;
+		}
+		
+		/**
 		 * Handler for data coming from the engine. 
 		 */
 		private static void ChessEngineDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
@@ -183,7 +361,15 @@ namespace ChessBridge
                 if (data != null)
                 {
                 	log("OUT: "+data);
-               		Console.WriteLine(data);
+               		
+                	/*if (data.StartsWith("move"))
+                	{
+                	    List<string> humanText = parseMoveToText(data.Substring(5));
+                	    String text = humanText[0];
+                	    reader.Speak(text);
+                	}*/
+                	
+                	Console.WriteLine(data);
             		Console.Out.Flush();
                 }
             }
@@ -240,6 +426,7 @@ namespace ChessBridge
 		/**
 		 * The main application. 
 		 */
+		[STAThread]
 		public static void Main(string[] args)
 		{
 			exitHandler += new EventHandler(ExitHandler);
@@ -249,7 +436,7 @@ namespace ChessBridge
 			
 			Dictionary<string,string> configParams = parseConfig("chessbridge.cfg");
 			
-			try
+			if (configParams.ContainsKey(LOGGING_KEY))
 			{
 				string str = configParams[LOGGING_KEY];
 				if (str == null || !str.ToLower().Trim().Equals("true"))
@@ -267,15 +454,20 @@ namespace ChessBridge
 					chessLogWriter = new StreamWriter(logBaseFilename+"-"+millis+".log");
 				}
 			}
-			catch(Exception ex)
+			else
 			{
-				//do nothing
+			    //assume logging to true if missing
+			    logToFile = true;
+				chessLogWriter = new StreamWriter(logBaseFilename+"-"+millis+".log");
 			}
 			
-			string tg = configParams[GUI_KEY];
-			if (tg != null && tg.Trim().Length > 0)
+			if (configParams.ContainsKey(GUI_KEY))
 			{
-				guiName = tg;
+    			string tg = configParams[GUI_KEY];
+    			if (tg != null && tg.Trim().Length > 0)
+    			{
+    				guiName = tg;
+    			}
 			}
 			
 			guiName = guiName.ToLower().Trim();
@@ -285,16 +477,28 @@ namespace ChessBridge
 		    	gui = ChessMaster.Instance;
 		    }
 			
-			engine = configParams[ENGINE_KEY];
+			if (configParams.ContainsKey(ENGINE_KEY))
+			{
+			    engine = configParams[ENGINE_KEY];
+			}
+			
 			if (engine == null || engine.Trim().Length == 0)
 			{
 				engine = DEFAULT_ENGINE;
 			}
 			
-			string mode = configParams[MODE_KEY];
-			if (mode != null)
+			string mode;
+			if (configParams.ContainsKey(MODE_KEY))
 			{
-				mode = mode.ToLower();
+			    mode = configParams[MODE_KEY];
+			    if (mode != null)
+    			{
+    				mode = mode.ToLower();
+    			}
+			}
+			else
+			{
+			    mode = "";
 			}
 			
 			if (mode.Equals(PERSONALITY_DUMP))
@@ -325,39 +529,53 @@ namespace ChessBridge
 			
 			string gamePersonality = null;
 			
-			foreach (string key in configParams.Keys)
+			if (configParams.ContainsKey(SHOW_PERSONALITY_DIALOG_KEY))
 			{
-				if (key.Equals(PERSONALITY_KEY))
-				{
-					//attempt to read in personality file
-					string value = configParams[key];
-					try
-					{
-						string personalityName = Path.GetFileNameWithoutExtension(value);
-						
-						if (!Path.GetExtension(value).ToLower().Equals(".ini"))
-						{
-							//parse binary file
-							gamePersonality = gui.parsePersonality(value);
-							
-							//store for the future as an ini
-							StreamWriter personalityFile = new StreamWriter(personalityName+".ini");
-							personalityFile.WriteLine(gamePersonality);
-							personalityFile.Flush();
-							personalityFile.Close();
-						}
-						else
-						{
-							gamePersonality = File.ReadAllText(value);
-						}
-					}
-					catch(Exception ex)
-					{
-						log("An exception occurred trying to read Chessmaster personality file "+value+". Will use defaults.");
-						log(ex.ToString());
-					}
-				}
+    		    string showDialog = configParams[SHOW_PERSONALITY_DIALOG_KEY];
+                
+                if (!showDialog.ToLower().Trim().Equals("false"))
+                {
+                    PersonalityGUI pg = new PersonalityGUI();
+                    DialogResult res = pg.ShowDialog();
+                    if (res == DialogResult.OK)
+                    {
+                        Personality p = pg.Personality;
+                        gamePersonality = p.toIniString();
+                    }
+                }
 			}
+			else if (configParams.ContainsKey(PERSONALITY_KEY) && gamePersonality == null)
+			{
+    			//attempt to read in personality file
+    			string value = configParams[PERSONALITY_KEY];
+    			try
+    			{
+    				string personalityName = Path.GetFileNameWithoutExtension(value);
+    				
+    				if (!Path.GetExtension(value).ToLower().Equals(".ini"))
+    				{
+    					//parse binary file
+    					gamePersonality = gui.parsePersonality(value);
+    					
+    					//store for the future as an ini
+    					StreamWriter personalityFile = new StreamWriter(personalityName+".ini");
+    					personalityFile.WriteLine(gamePersonality);
+    					personalityFile.Flush();
+    					personalityFile.Close();
+    				}
+    				else
+    				{
+    					gamePersonality = File.ReadAllText(value);
+    				}
+    			}
+    			catch(Exception ex)
+    			{
+    				log("An exception occurred trying to read Chessmaster personality file "+value+". Will use defaults.");
+    				log(ex.ToString());
+    			}
+			}
+			
+			
 			
 			log("***PROGRAM ARGUMENTS***");
 			foreach(string arg in args)
