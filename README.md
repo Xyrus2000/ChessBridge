@@ -13,8 +13,10 @@ The chessmaster engine (TheKing) is a winboard/xboard based engine beginning wit
 
 To that end, I've written this quickly hacked together application. Don't expect the moon and stars here, I wrote this mainly for my own purposes but considering how popular the chessmaster series was I'm sure someone else can find a use/tweak this for themselves.
 
-The application has two modes. One is direct use a "bridge" and the other is to dump chessmaster personality files (CMP files) out as INI type text files.
+The application has two modes. One is direct use a "bridge" and the other is to dump chessmaster personality files (CMP files) out as INI type text files. The direct bridge mode can also display a GUI that can be used to load, tweak, and save a Chessmaster personality in case you're using a third party GUI.
 
+PERSONALITY DUMP
+=================
 To dump a directory of personality files, in the chessbridge.cfg file set:
 
 mode=personality.dump  
@@ -28,7 +30,7 @@ PERSONALITY NOTES
 
 These are the parameters (with sample values) and value ranges that the engine recognizes all of them are optional EXCEPT for opk and default. For the opk value, as far as I can tell you only need to get this once from the chessmaster application and it will work for everything else. Just in case you want to create a personality by hand. :)
 
- *OPK value. Required.*  
+ *OPK value. Required. Uniquely generated each time you restart your computer so you need to grab it for TheKing torun at full strength.*  
 cm_parm opk=586126  
  *Sets the personality with defaults. Required.*  
 cm_parm default  
@@ -97,10 +99,16 @@ To use this program to allow the use of the chessmaster engine (TheKing) with th
 
 mode=  
 gui=  
+opk=<OPK number>
 engine=TheKing.exe  
-personality=Sompeersonality.CMP  
+personality=Sompeersonality.CMP
+show.personality.dialog=true
+
+The OPK key will be needed to run the Chessmaster engine. You can get it by taking this application, renaming it to what the Chessmaster engine is called in your Chessmaster installation, copying into that directory (make sure you save the original engine file!), turning on logging, and starting a game. The OPK key will be in the log file.
 
 Mode and gui can be left blank. Set the engine parameter to where/what you have your chessmaster engine executable named. The personality can either be a native chessmaster CMP file or an text/ini file with the paramaters specified above. Then in Arena or whatever GUI you're using, just specify the chessbridge executable as the engine.
+
+Setting show.personality.dialog will cause ChessBridge to bring up a Chessmaster Personality editor dialog. This comes up at the start of a new game and allows you to load, edit, and even save a Chessmaster personality to use for the Chessmaster engine. Note that by using the dialog, you override the personality setting. Also note that using the GUI for engines other than Chessmaster will (obviously) have no effect.
 
 IMPORTANT! The bridge only works with the winboard/xboard protocol. If you're using a UCI only GUI, you will need to use some other application like WB2UCI as a go between.
 
