@@ -335,6 +335,7 @@ namespace ChessBridge
             // 
             this.ttSizeComboBox.FormattingEnabled = true;
             this.ttSizeComboBox.Items.AddRange(new object[] {
+                                    "None",
                                     "512 KB",
                                     "1 MB",
                                     "2 MB",

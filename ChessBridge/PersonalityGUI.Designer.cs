@@ -153,6 +153,7 @@ namespace ChessBridge
             // 
             // okButton
             // 
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.Location = new System.Drawing.Point(479, 409);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(62, 26);
@@ -163,6 +164,7 @@ namespace ChessBridge
             // 
             // cancelButton
             // 
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.cancelButton.Location = new System.Drawing.Point(479, 441);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(62, 26);
@@ -242,6 +244,8 @@ namespace ChessBridge
             this.positionalPropertiesPanel.saveToPersonality(personality);
             this.materialPropertiesPanel.saveToPersonality(personality);
             this.infoPropertiesPanel.saveToPersonality(personality);
+            
+            this.Close();
         }
     }
 }

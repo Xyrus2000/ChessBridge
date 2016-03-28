@@ -441,12 +441,29 @@ namespace ChessBridge
 		{
 			//text
 	        StringBuilder sb = new StringBuilder();
+	        
+	        //must have an opk number
+	        //sb.AppendLine("cm_parm opk=204414");//("cm_parm opk=586126");
+			
+			sb.AppendLine("cm_parm default");
+			//sb.AppendLine("cm_parm debug=true");
+			//sb.AppendLine("cm_parm verbose=true");
+			
+	        //
+			sb.AppendLine("cm_parm opp="+this.oppP+" opn="+this.oppN+" opb="+this.oppB+" opr="+this.oppR+" opq="+this.oppQ);
+			sb.AppendLine("cm_parm myp="+this.ownP+" myn="+this.ownN+" myb="+this.ownB+" myr="+this.ownR+" myq="+this.ownQ);
+			sb.AppendLine("cm_parm mycc="+this.ownCoC+" mymob="+this.ownMob+" myks="+this.ownKS+" mypp="+this.ownPP+" mypw="+this.ownPW);
+			sb.AppendLine("cm_parm opcc="+this.oppCoC+" opmob="+this.oppMob+" opks="+this.oppKS+" oppp="+this.oppPP+" oppw="+this.oppPW);
+			sb.AppendLine("cm_parm cfd="+this.contempt+" sop="+this.sop+" avd="+this.attackDefense+
+			             " rnd="+this.rand+" sel="+this.selSearch+" md="+this.maxDepth);
+			sb.AppendLine("cm_parm tts="+Math.Pow(2,18+this.TtSize));
+			
             //must have an opk number
-			sb.AppendLine("cm_parm opk=586126");
+			//sb.AppendLine("cm_parm opk=586126");
 			//weather or not to perform analysis
 			//sb.AppendLine("cm_parm ana=1");
 			//always included
-			sb.AppendLine("cm_parm default");
+			/*sb.AppendLine("cm_parm default");
 			
 			sb.AppendLine("cm_parm mycc="+this.OwnCoC);
 			sb.AppendLine("cm_parm opcc="+this.OppCoC);
@@ -469,7 +486,7 @@ namespace ChessBridge
 			sb.AppendLine("cm_parm rnd="+this.Rand);
 			sb.AppendLine("cm_parm sel="+this.SelSearch);
 			sb.AppendLine("cm_parm md="+this.MaxDepth);
-			sb.AppendLine("cm_parm tts="+Math.Pow(2,18+this.TtSize));
+			
 			
 			sb.AppendLine("cm_parm myp="+this.OwnP);
 			sb.AppendLine("cm_parm opp="+this.OppP);
@@ -485,7 +502,8 @@ namespace ChessBridge
 			
 			sb.AppendLine("cm_parm myq="+this.OwnQ);
 			sb.AppendLine("cm_parm opq="+this.OppQ);
-    			
+    		
+            sb.AppendLine("cm_parm tts="+Math.Pow(2,18+this.TtSize));*/			
 			return sb.ToString();
 		}
 		
@@ -528,7 +546,7 @@ namespace ChessBridge
 			this.Sex = v;
 			
 			v = Program.getIntFromByteArray(bytes,CM_AGE_OFFSET);
-			Program.log("Age: Male");
+			Program.log("Age: "+v);
 			this.Age = v;
 			
 		    v = Program.getIntFromByteArray(bytes,CM_SHOW_ELO_OFFSET);
@@ -544,30 +562,38 @@ namespace ChessBridge
 		    
 			v = Program.getIntFromByteArray(bytes,CM_PONDER_OFFSET);
 			this.Ponder = v;
+			Program.log("Pondering: "+v);
 						
 			v = Program.getIntFromByteArray(bytes,CM_TABLESIZE_OFFSET);
 			if (v > 0)
 			{
 				personality.TtSize = v;
 			}
+			Program.log("Transposition Table: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_ENDGAMEDB_OFFSET);
 			this.UseEGT = v;
+			Program.log("Use End Game Table: "+v);
 						
 			v = Program.getIntFromByteArray(bytes,CM_ELO_OFFSET);
 			personality.Elo = v;
+			Program.log("ELO: "+v);
 				
 			v = Program.getIntFromByteArray(bytes,CM_GM_GROUP_OFFSET);
 			this.IsGM = v;
+			Program.log("GM Group: "+v);
 						
 			v = Program.getIntFromByteArray(bytes,CM_ATTACKDEFENSE_OFFSET);
 			personality.AttackDefense = v;
+			Program.log("Attack/Defense: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_STRENGTH_OFFSET);
 			personality.Sop = v;
+			Program.log("Strength: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_RANDOMNESS_OFFSET);
 			personality.Rand = v;
+			Program.log("Randomness: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_UNKNOWN_OFFSET);
 			int unknown = v;
@@ -575,78 +601,104 @@ namespace ChessBridge
 			
 			v = Program.getIntFromByteArray(bytes,CM_MAXSEARCHDEPTH_OFFSET);
 			personality.MaxDepth = v;
+			Program.log("Max Depth: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_SELECTIVESEARCH_OFFSET);
 			personality.SelSearch = v;
+			Program.log("Selective Search: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_CONTEMPT_OFFSET);
 			personality.Contempt = v;
+			Program.log("Contempt for Draw: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_MATERIALPOSITIONAL_OFFSET);
 			personality.MatPos = v;
+			Program.log("Material/Positional: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNCONTROLOFCENTER_OFFSET);
 			personality.OwnCoC = v;
+			Program.log("Own Control of Center: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPCONTROLOFCENTER_OFFSET);
 			personality.OppCoC = v;
+			Program.log("Opp. Control of Center: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNMOBILITY_OFFSET);
 			personality.OwnMob = v;
+			Program.log("Own Mobility: "+v);
+			
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPMOBILITY_OFFSET);
 			personality.OppMob = v;
+			Program.log("Opp. Mobility: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNKINGSAFETY_OFFSET);
 			personality.OwnKS = v;
+			Program.log("Own King Safety: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPKINGSAFETY_OFFSET);
 			personality.OppKS = v;
+			Program.log("Opp. King Safety: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNPASSEDPAWNS_OFFSET);
 			personality.OwnPP = v;
+			Program.log("Own Passed Pawns: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPPASSEDPAWNS_OFFSET);
 			personality.OppPP = v;
+			Program.log("Opp. Passed Pawns: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNPAWNWEAKNESS_OFFSET);
 			personality.OwnPW = v;
+			Program.log("Own Pawn Weakness: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPPAWNWEAKNESS_OFFSET);
 			personality.OppPW = v;
+			Program.log("Opp. Pawn Weakness: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNQUEEN_OFFSET);
 			personality.OwnQ = v;
+			Program.log("Own Queen: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPQUEEN_OFFSET);
 			personality.OppQ = v;
+			Program.log("Opp. Queen : "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNROOK_OFFSET);
 			personality.OwnR = v;
+			Program.log("Own Rooks: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPROOK_OFFSET);
 			personality.OppR = v;
+			Program.log("Opp. Rooks: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNBISHOP_OFFSET);
 			personality.OwnB = v;
+			Program.log("Own Bishops: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPBISHOP_OFFSET);
 			personality.OppB = v;
+			Program.log("Opp. Bishops: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNKNIGHT_OFFSET);
 			personality.OwnN = v;
+			Program.log("Own Knights: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPKNIGHT_OFFSET);
 			personality.OppN = v;
+			Program.log("Opp. Knights: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OWNPAWN_OFFSET);
 			personality.OwnP = v;
+			Program.log("Own Pawns: "+v);
 			
 			v = Program.getIntFromByteArray(bytes,CM_OPPPAWN_OFFSET);
 			personality.OppP = v;
+			Program.log("Opp. Pawns: "+v);
 			
 			string openingBook = Program.getStringFromByteArray(bytes,CM_OPENINGBOOK_OFFSET);
 			personality.OpeningBook = openingBook;
+			Program.log("Opening Book: "+v);
 			
 			string image = Program.getStringFromByteArray(bytes,CM_IMAGE_OFFSET);
 			personality.Image = image;
@@ -654,16 +706,20 @@ namespace ChessBridge
 			
 			string playingStyle = Program.getStringFromByteArray(bytes,CM_SHORTPLAYSTYLE_OFFSET);
 			personality.ShortPlayingStyle = playingStyle;
+			Program.log("Short Playing Style: "+v);
 			
 			string biography = Program.getStringFromByteArray(bytes,CM_BIOGRAPHY_OFFSET);
 			personality.Biography = biography;
+			Program.log("Biography: "+v);
 			
 			string longPlayStyle = Program.getStringFromByteArray(bytes,CM_LONGPLAYSTYLE_OFFSET);
 			longPlayStyle = longPlayStyle.Replace("%d",personality.Elo.ToString());
 			personality.LongPlayingStyle = longPlayStyle;
+			Program.log("Long Playing Style: "+v);
 			
 			string wbEnginePath = Program.getStringFromByteArray(bytes,CM_WINBOARDENGINEPATH_OFFSET);
 			personality.Winboard = wbEnginePath;
+			Program.log("Winboard Engine Path: "+v);
 			
 		}
 		

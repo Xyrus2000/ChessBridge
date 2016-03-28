@@ -67,6 +67,8 @@ namespace ChessBridge
 		private const string LOG_BASE_FILENAME_KEY = "logging.base_filename";
 		//The engine executable to bridge to
 		private const string SHOW_PERSONALITY_DIALOG_KEY = "show.personality.dialog";
+		//OPK Key
+		private const string OPK_KEY = "opk";
 		
 		/**
 		 * Log file writer.
@@ -423,6 +425,39 @@ namespace ChessBridge
         	return configMap;
         }
         
+        /**
+         * Displays the personality editor
+         */
+        public static Personality showPersonalityGui()
+        {
+            log("Showing personality dialog...");
+            PersonalityGUI pg = new PersonalityGUI();
+            log("Personality dialog created...");
+            
+            try
+            {
+                //Application.EnableVisualStyles();
+                //Application.SetCompatibleTextRenderingDefault(false);
+                pg.Visible = true;
+                pg.ShowInTaskbar = true;
+                Application.Run(pg);
+                
+                if (pg.DialogResult == DialogResult.OK)
+                {
+                    Personality p = pg.Personality;
+                    return p;
+                    //gamePersonality = p.toIniString();
+                }
+                pg.Dispose();
+            }
+            catch(Exception ex)
+            {
+                log("ERROR: Could not handle personality! "+ex.ToString());
+            }
+            return null;
+        }
+        
+        
 		/**
 		 * The main application. 
 		 */
@@ -527,24 +562,32 @@ namespace ChessBridge
 				}
 			}
 			
+			//load OPK key if provided
+			string opk = null;
+			if(configParams.ContainsKey(OPK_KEY))
+			{
+			    opk = configParams[OPK_KEY];
+			}
+			else
+			{
+			    log("WARNING: No OPK key specified. If you're trying to use the chessmaster engine with a 3rd party application it will NOT" +
+			        " operate at full strength.");
+			}
+			
+			//load personality if provided
 			string gamePersonality = null;
 			
-			if (configParams.ContainsKey(SHOW_PERSONALITY_DIALOG_KEY))
+			/*if (configParams.ContainsKey(SHOW_PERSONALITY_DIALOG_KEY))
 			{
     		    string showDialog = configParams[SHOW_PERSONALITY_DIALOG_KEY];
                 
                 if (!showDialog.ToLower().Trim().Equals("false"))
                 {
-                    PersonalityGUI pg = new PersonalityGUI();
-                    DialogResult res = pg.ShowDialog();
-                    if (res == DialogResult.OK)
-                    {
-                        Personality p = pg.Personality;
-                        gamePersonality = p.toIniString();
-                    }
+                    Personality p = showPersonalityGui();
+                    gamePersonality = p.toIniString();
                 }
 			}
-			else if (configParams.ContainsKey(PERSONALITY_KEY) && gamePersonality == null)
+			else*/ if (configParams.ContainsKey(PERSONALITY_KEY) && gamePersonality == null)
 			{
     			//attempt to read in personality file
     			string value = configParams[PERSONALITY_KEY];
@@ -613,15 +656,16 @@ namespace ChessBridge
 			log("***ENGINE COMS***");
 			
 			//if a personality was specified, use it first
-			if (gamePersonality != null)
+			/*if (gamePersonality != null)
 			{
 				log("IN: "+gamePersonality);
 				//pass to engine
 				engineProcess.StandardInput.WriteLine(gamePersonality);
 				engineProcess.StandardInput.Flush();
-			}
+			}*/
 			
 			string[] nl = new string[]{"\\n"};
+			bool loaded = false;
 			while ((line = Console.ReadLine()) != null && line != "") 
 			{
 				//if this parameter is found, we're running from the chessmaster gui and require
@@ -636,10 +680,61 @@ namespace ChessBridge
 				{
 					if (tok.Trim().Length > 0)
 					{
-						log("IN: "+tok);
-						//pass to engine
-						engineProcess.StandardInput.WriteLine(tok);
-						engineProcess.StandardInput.Flush();
+					    if (tok.Equals("new") && !loaded)
+					    {
+					        log("IN: "+tok);
+					        
+    						//pass to engine
+    						engineProcess.StandardInput.WriteLine(tok);
+    						engineProcess.StandardInput.Flush();
+    						
+						    if (configParams.ContainsKey(SHOW_PERSONALITY_DIALOG_KEY))
+                			{
+                    		    string showDialog = configParams[SHOW_PERSONALITY_DIALOG_KEY];
+                                
+                                if (!showDialog.ToLower().Trim().Equals("false"))
+                                {
+                                    Personality p = showPersonalityGui();
+                                    gamePersonality = p.toIniString();
+                                }
+                			}
+						    
+						    if (gamePersonality != null)
+						    {
+					            log("IN: "+gamePersonality);
+					            engineProcess.StandardInput.WriteLine(gamePersonality);
+		                        engineProcess.StandardInput.Flush();
+						    }
+    						
+    						loaded = true;
+					    }
+					    else if (tok.Equals("xboard") && gamePersonality != null)
+					    {
+					        log("IN: "+tok);
+    						//pass to engine
+    						engineProcess.StandardInput.WriteLine(tok);
+    						engineProcess.StandardInput.Flush();
+    						
+    						log("IN: "+"cm_parm opk="+opk);
+    						engineProcess.StandardInput.WriteLine("cm_parm opk="+opk);
+    						engineProcess.StandardInput.Flush();
+    						
+					    }
+					    else if (tok.Equals("quit") || tok.Equals("exit"))
+					    {
+					        loaded = false;
+					        log("IN: "+tok);
+    						//pass to engine
+    						engineProcess.StandardInput.WriteLine(tok);
+    						engineProcess.StandardInput.Flush();
+					    }
+					    else
+					    {
+    						log("IN: "+tok);
+    						//pass to engine
+    						engineProcess.StandardInput.WriteLine(tok);
+    						engineProcess.StandardInput.Flush();
+					    }
 					}
 				}
 			}
