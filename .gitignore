@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs
+/ChessBridge/obj
+/ChessBridge/bin/Release
+/ChessBridge/bin/Debug
