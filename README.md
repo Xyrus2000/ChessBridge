@@ -1,5 +1,5 @@
 # ChessBridge
-A bridge application that allows the chessmaster gui (9000, X, and XI) to work with different engines as the core, and allow the chessmaster based engines to work better with 3rd party GUIs.
+A bridge application that allows the chessmaster gui (8000, 9000, X, and XI) to work with different engines as the core, and allow the chessmaster based engines to work better with 3rd party GUIs.
 
 NOTE: This is released as free software. If you do happen use it, extend it, fork it, whatever it would be nice to give me a shout out though. :)
 
@@ -101,7 +101,7 @@ mode=
 gui=  
 opk=<OPK number>
 engine=TheKing.exe  
-personality=Sompeersonality.CMP
+personality=Sompersonality.CMP
 show.personality.dialog=true
 
 The OPK key will be needed to run the Chessmaster engine. You can get it by taking this application, renaming it to what the Chessmaster engine is called in your Chessmaster installation, copying into that directory (make sure you save the original engine file!), turning on logging, and starting a game. The OPK key will be in the log file.
