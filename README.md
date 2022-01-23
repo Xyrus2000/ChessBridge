@@ -9,7 +9,7 @@ Developed using SharpDevelop.
 
 I've always enjoyed the Chessmaster series, and was said to see it end. However, that doesn't mean it's dead. :)
 
-The chessmaster engine (TheKing) is a winboard/xboard based engine beginning with CM 9000. That being said, it has a couple of "unique" traits that make it a little tricky to use with thrid party applications like Arena. Conversely, if you want to swap out the the engine for something a little more modern there's also a few hiccups that prevent a smooth integration. Furthermore, the chessmaster "personalities" are encoded in a binary format so even if you get it running you don't necessarily have a way of getting the personality settings in a form the engine can understand outside of the Chessmaster program.
+The chessmaster engine (TheKing) is a winboard/xboard based engine beginning with CM 8000. That being said, it has a couple of "unique" traits that make it a little tricky to use with thrid party applications like Arena. Conversely, if you want to swap out the the engine for something a little more modern there's also a few hiccups that prevent a smooth integration. Furthermore, the chessmaster "personalities" are encoded in a binary format so even if you get it running you don't necessarily have a way of getting the personality settings in a form the engine can understand outside of the Chessmaster program.
 
 To that end, I've written this quickly hacked together application. Don't expect the moon and stars here, I wrote this mainly for my own purposes but considering how popular the chessmaster series was I'm sure someone else can find a use/tweak this for themselves.
 
