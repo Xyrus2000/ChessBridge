@@ -35,7 +35,6 @@ namespace ChessBridge
 		public const string GENERIC_UCI = "uci";
 		
 		
-		
 		/***************************************************************************
  		* Modes. If a mode is not specified, then the default "bridge" mode is run.
  		****************************************************************************/
@@ -63,6 +62,8 @@ namespace ChessBridge
 		private const string PERSONALITY_KEY = "personality";
 		//To run with or without logging
 		private const string LOGGING_KEY = "logging";
+		//To run with or without console logging
+		private const string CONSOLE_LOGGING_KEY = "console_logging";
 		//Base file name for generated logs
 		private const string LOG_BASE_FILENAME_KEY = "logging.base_filename";
 		//The engine executable to bridge to
@@ -76,6 +77,7 @@ namespace ChessBridge
 		private static StreamWriter chessLogWriter = null;
 		
 		private static bool logToFile = false;
+		private static bool logToConsole = false;
 		private static string logBaseFilename = DEFAULT_LOG_BASE_FILENAME;
 		
 		private static string guiName = DEFAULT_GUI;
@@ -140,8 +142,6 @@ namespace ChessBridge
         }
 		
 		
-		
-		
 		/**
 		 * Simple logging method. If logging is enabled, will write messages to the log.
 		 */ 
@@ -152,6 +152,11 @@ namespace ChessBridge
 				chessLogWriter.WriteLine(message);
 				chessLogWriter.Flush();
 			}
+			
+			if (logToConsole)
+			{
+				Console.WriteLine(message);
+            }
 		}
 		
 		/**
@@ -495,7 +500,26 @@ namespace ChessBridge
 			    logToFile = true;
 				chessLogWriter = new StreamWriter(logBaseFilename+"-"+millis+".log");
 			}
-			
+
+			if (configParams.ContainsKey(CONSOLE_LOGGING_KEY))
+			{
+				string str = configParams[CONSOLE_LOGGING_KEY];
+				if (str == null || !str.ToLower().Trim().Equals("true"))
+				{
+					logToConsole = false;
+				}
+				else
+				{
+					logToConsole = true;
+				}
+			}
+			else
+			{
+				//NOTE: Logging to the console can interefere with engine communication, so only enable when there is a problem that for some reason isn't
+				//making it to the log file
+				logToConsole = false;
+			}
+
 			if (configParams.ContainsKey(GUI_KEY))
 			{
     			string tg = configParams[GUI_KEY];
@@ -618,8 +642,6 @@ namespace ChessBridge
     			}
 			}
 			
-			
-			
 			log("***PROGRAM ARGUMENTS***");
 			foreach(string arg in args)
 			{
@@ -649,7 +671,11 @@ namespace ChessBridge
 	     	{
 	     		log("Exception occurred trying to start engine "+engine+"!");
 	     		log(ex.ToString());
-	     	}
+
+				Console.WriteLine("Exception occurred trying to start engine " + engine + "!");
+				Console.WriteLine(ex.ToString());
+				Environment.Exit(-1);
+			 }
 	
 			//Now the bridge. Read in and record commands from GUI and pass them on to the engine.
 			string line;

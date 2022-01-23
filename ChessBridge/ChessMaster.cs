@@ -192,7 +192,7 @@ namespace ChessBridge
 		public string translateFromEngine(string output)
 		{
 			//Polygot includes comment lines from the UCI output of engines.
-			//These have to be stripped off to worjk with chessmaster
+			//These have to be stripped off to work with chessmaster
 			if (output.StartsWith("#"))
 			{
 				Program.log("COMMENT: "+output);
